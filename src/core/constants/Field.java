@@ -1,24 +1,39 @@
 package core.constants;
 
 import core.components.Coord;
-import core.components.Ranges;
 
 public final class Field {
+    public static int IMAGE_SIZE = 50;
 
-    // Prevents instantiation
-    private Field() {}
-    public enum GameDifficulty{
+    public Coord SIZE;
+    public int MINES;
+
+    public enum GameDifficulty {
         BEGINNER, // 9x9 FIElD, 10 MINES
         INTERMEDIATE, // 16X16, 40 MINES
-        EXPERT // 40X16, 99 MINES
+        EXPERT, // 40X16, 99 MINES
+        CUSTOM
     }
-    public static final int IMAGE_SIZE = 50;
-    public static final Coord BEGINNER = new Coord(9, 9);
-    public static final int BEGINNER_MINES = 10;
 
-    public static final Coord INTERMEDIATE = new Coord(16, 16);
-    public static final int INTERMEDIATE_MINES = 40;
-
-    public static final Coord EXPERT = new Coord(30, 16);
-    public static final int EXPERT_MINES = 99;
+    public Field(GameDifficulty difValue) {
+        switch (difValue) {
+            default -> { // INTERMEDIATE
+                SIZE = new Coord(16, 16);
+                MINES = 40;
+            }
+            case BEGINNER -> {
+                SIZE = new Coord(9, 9);
+                MINES = 10;
+            }
+            case EXPERT -> {
+                SIZE = new Coord(30, 16);
+                MINES = 99;
+            }
+            // TODO: custom dif
+            case CUSTOM -> {
+                SIZE = null;
+                MINES = 0;
+            }
+        }
+    }
 }

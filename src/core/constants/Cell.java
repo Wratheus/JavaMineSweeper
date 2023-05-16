@@ -13,9 +13,12 @@ public enum Cell {
     BOMB,
     OPENED,
     CLOSED,
-    FLAGED,
+    FLAGGED,
     BOMBED,
     NOBOMB;
 
     public Object image;
+    public Cell getNextNum() {
+        return Cell.values()[this.ordinal() + 1];
+    }
 }
