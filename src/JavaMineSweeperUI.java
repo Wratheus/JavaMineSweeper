@@ -13,7 +13,7 @@ import java.util.Objects;
 public class JavaMineSweeperUI extends JFrame {
     private JPanel panel;
     private final Game game;
-
+    private JLabel gameStateLabel;
     public static void main(String[] args) {
         new JavaMineSweeperUI().setVisible(true);
     }
@@ -23,10 +23,14 @@ public class JavaMineSweeperUI extends JFrame {
         game = new Game(difficulty);
         game.start();
         setImages();
+        initLabel();
         initPanel();
         initFrame();
     }
-
+    private void initLabel() {
+        gameStateLabel = new JLabel("Welcome");
+        add(gameStateLabel, BorderLayout.NORTH);
+    }
     private void initPanel () {
         // cells
         panel = new JPanel() {
@@ -55,11 +59,13 @@ public class JavaMineSweeperUI extends JFrame {
                 Coord coord = new Coord(x, y);
                 if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord);
                 if(e.getButton() == MouseEvent.BUTTON3) game.pressedRightButton(coord);
+                gameStateLabel.setText(getMessage());
                 panel.repaint();
             }
         });
         add(panel);
     }
+
     private void initFrame () {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java Mine Sweeper");
@@ -82,5 +88,20 @@ public class JavaMineSweeperUI extends JFrame {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(fileName)));
         return icon.getImage();
     }
-
+    private String getMessage() {
+        switch (game.getState()){
+            case LOSE -> {
+                return "GAME OVER";
+            }
+            case WIN -> {
+                return "Congratulations!";
+            }
+            case PLAYING -> {
+                return "GoodLuck!";
+            }
+            default -> {
+                return "Welcome!";
+            }
+        }
+    }
 }
