@@ -50,12 +50,13 @@ public class JavaMineSweeperUI extends JFrame {
                 Ranges.getSize().getX() * Field.IMAGE_SIZE,
                 Ranges.getSize().getY() * Field.IMAGE_SIZE
         );
+
         panel.setPreferredSize(gameField);
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
                 int x = e.getX() / Field.IMAGE_SIZE;
-                int y = e.getY() /Field.IMAGE_SIZE;
+                int y = e.getY() / Field.IMAGE_SIZE;
                 Coord coord = new Coord(x, y);
                 if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord);
                 if(e.getButton() == MouseEvent.BUTTON3) game.pressedRightButton(coord);

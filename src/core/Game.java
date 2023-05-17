@@ -8,8 +8,10 @@ import core.constants.Cell;
 import core.constants.Field;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-// TODO: fix flagged after game LOSE
 // TODO: show all bombs after LOSE
 // TODO: num click
 // FACADE main game class
@@ -36,62 +38,63 @@ public class Game {
         else return flag.get(coord); // else show flag level value
     }
 
+    // gameplay
     public void pressedLeftButton(Coord coord) {
         switch (state) {
             case START -> {
-                if (bomb.get(coord) == Cell.BOMB) flag.setFlaggedToCell(coord); // extra chance for first click
-                else flag.setOpenedToCell(coord);
+                if (bomb.get(coord) != Cell.BOMB){
+                    flag.setOpenedToCell(coord);
+                }
                 revealAround(coord);
                 setState(GameState.PLAYING);
             }
             case PLAYING -> {
-                switch (bomb.get(coord)){
-                    case BOMB -> { // lose-condition
-                        flag.setBombedToCell(coord);
-                        setState(GameState.LOSE);
-                    }
-                    case ZERO -> { // if already opened do nothing else reveal around empty space
-                        if(!(flag.get(coord) == Cell.OPENED)) {
-                            revealAround(coord);
+                if (flag.get(coord) == Cell.CLOSED) { // if Cell is not revealed already
+                    switch (bomb.get(coord)) {
+                        case BOMB -> { // lose-condition
+                            flag.setBombedToCell(coord);
+                            setState(GameState.LOSE);
                         }
+                        case ZERO -> {
+                            flag.setOpenedToCell(coord);
+                            revealAround(coord); // reveal around empty space
+                        }
+                        default -> flag.setOpenedToCell(coord);
                     }
-                    default -> flag.setOpenedToCell(coord);
-
                 }
             }
         }
     }
-    private ArrayList<Coord> checked = new ArrayList<Coord>(); // stackoverflow saver do not check twice same Coords [if(!checked.contains(around))]
+    private final Set<Coord> checkedCells = new HashSet<Coord>(); // list of checked values
     public void revealAround(Coord coord) {
         for (Coord around : Ranges.getCoordsAround(coord)) {
-            if (!checked.contains(around)) {
-                switch (bomb.get(around)) {
-                    case ZERO -> { // reveal ZERO values and go deeper while there is still ZERO values around
-                        flag.setOpenedToCell(around);
-                        checked.add(coord);
-                        revealAround(around);
+            if (!checkedCells.contains(around)) {
+                checkedCells.add(coord);
+                switch (flag.get(around)){
+                    case FLAGGED -> {
+                        return;
                     }
-                    case BOMB -> {
-                        if (state == GameState.START) {
-                            if (!(flag.get(around) == Cell.FLAGGED)) { // check if BOMB is already flagged do not cancel it
-                                flag.setFlaggedToCell(around);
-                                checked.add(coord);
+                    case CLOSED -> {
+                        switch (bomb.get(around)){
+                            case BOMB -> {
+                                if(state == GameState.START) flag.setFlaggedToCell(around);
                             }
-                        } else {
-                            flag.setOpenedToCell(around); // else reveal number-value
-                            checked.add(coord);
+                            case ZERO -> { // reveal ZERO values and go deeper while there is still ZERO values around
+                                flag.setOpenedToCell(around);
+                                revealAround(around);
+                            }
+                            default -> flag.setOpenedToCell(around); // else reveal number-value
+
                         }
-                    }
-                    default -> {
-                        flag.setOpenedToCell(around); // else reveal number-value
-                        checked.add(coord);
                     }
                 }
             }
         }
     }
     public void pressedRightButton(Coord coord) {
-        flag.setFlaggedToCell(coord);
+        if (Objects.requireNonNull(state) == GameState.PLAYING) {
+            flag.setFlaggedToCell(coord);
+        }
     }
 
 
