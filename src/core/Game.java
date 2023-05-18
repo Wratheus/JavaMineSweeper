@@ -7,14 +7,9 @@ import core.components.Ranges;
 import core.constants.Cell;
 import core.constants.Field;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-// TODO: show all bombs after LOSE
-// TODO: num click
-// FACADE main game class
 public class Game {
     private final Bomb bomb;
     private final Flag flag;
@@ -32,76 +27,123 @@ public class Game {
         state = GameState.START;
     }
 
-
-    public Cell getBox(Coord coord) {
+    public Cell getCell(Coord coord) {
         if(flag.get(coord) == Cell.OPENED) return bomb.get(coord); // If flag-level is opened show lower-level the bomb level
         else return flag.get(coord); // else show flag level value
     }
 
     // gameplay
     public void pressedLeftButton(Coord coord) {
+        openCell(coord);
+        checkWin();
+    }
+    public void pressedRightButton(Coord coord) {
+        if (state == GameState.PLAYING) {
+            flag.setFlaggedToCell(coord);
+            checkWin();
+        }
+    }
+
+    // state management
+    public GameState getState() {
+        return state;
+    }
+    private void setState(GameState state) {
+        this.state = state;
+    }
+
+    private void lose(Coord bombClicked) {
+        setState(GameState.LOSE);
+        for (Coord coord : Ranges.getCoordsList()) {
+            if(bomb.get(coord) == Cell.BOMB)
+                flag.setOpenedToClosedBombCell(coord);
+            else
+                flag.setNoBombToFlaggedCell(coord);
+        }
+        flag.setBombedToCell(bombClicked);
+    }
+    private void checkWin() {
+        if(state == GameState.PLAYING){
+            if(flag.getTotalFlags() == bomb.getTotalBombs()) {
+                if (flag.getCountOfClosedCells() == bomb.getTotalBombs()){
+                    setState(GameState.WIN);
+                }
+            }
+        }
+    }
+
+    // gameplay
+    private final Set<Coord> checkedCells = new HashSet<Coord>(); // list of checked values
+    private void revealAround(Coord coord) {
+        for (Coord around : Ranges.getCoordsAround(coord)) {
+            if (!checkedCells.contains(around)) {
+                checkedCells.add(coord);
+                switch (flag.get(around)){
+                    case FLAGGED: {
+                        break;
+                    }
+                    case CLOSED: {
+                        switch (bomb.get(around)){
+                            case BOMB: {
+                                break;
+                            }
+                            case ZERO: { // reveal ZERO values and go deeper while there is still ZERO values around
+                                flag.setOpenedToCell(around);
+                                revealAround(around);
+                                break;
+                            }
+                            default: {
+                                flag.setOpenedToCell(around); // else reveal number-value
+                                break;
+                            }
+
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    private void openCell(Coord coord) {
         switch (state) {
-            case START -> {
+            case START: {
                 if (bomb.get(coord) != Cell.BOMB){
                     flag.setOpenedToCell(coord);
                 }
                 revealAround(coord);
                 setState(GameState.PLAYING);
+                break;
             }
-            case PLAYING -> {
+            case PLAYING: {
+                if (flag.get(coord) == Cell.OPENED) {
+                    setOpenedToClosedBombCellsAround(coord);
+                }
                 if (flag.get(coord) == Cell.CLOSED) { // if Cell is not revealed already
                     switch (bomb.get(coord)) {
-                        case BOMB -> { // lose-condition
-                            flag.setBombedToCell(coord);
-                            setState(GameState.LOSE);
+                        case BOMB: {
+                            lose(coord);
+                            break;
                         }
-                        case ZERO -> {
+                        case ZERO: {
                             flag.setOpenedToCell(coord);
                             revealAround(coord); // reveal around empty space
+                            break;
                         }
-                        default -> flag.setOpenedToCell(coord);
-                    }
-                }
-            }
-        }
-    }
-    private final Set<Coord> checkedCells = new HashSet<Coord>(); // list of checked values
-    public void revealAround(Coord coord) {
-        for (Coord around : Ranges.getCoordsAround(coord)) {
-            if (!checkedCells.contains(around)) {
-                checkedCells.add(coord);
-                switch (flag.get(around)){
-                    case FLAGGED -> {
-                        return;
-                    }
-                    case CLOSED -> {
-                        switch (bomb.get(around)){
-                            case BOMB -> {
-                                if(state == GameState.START) flag.setFlaggedToCell(around);
-                            }
-                            case ZERO -> { // reveal ZERO values and go deeper while there is still ZERO values around
-                                flag.setOpenedToCell(around);
-                                revealAround(around);
-                            }
-                            default -> flag.setOpenedToCell(around); // else reveal number-value
-
+                        default: {
+                            flag.setOpenedToCell(coord);
+                            break;
                         }
                     }
                 }
+                break;
             }
         }
     }
-    public void pressedRightButton(Coord coord) {
-        if (Objects.requireNonNull(state) == GameState.PLAYING) {
-            flag.setFlaggedToCell(coord);
-        }
-    }
-
-
-    public GameState getState() {
-        return state;
-    }
-    public void setState(GameState state) {
-        this.state = state;
+    private void setOpenedToClosedBombCellsAround(Coord coord){
+        if(bomb.get(coord) != Cell.BOMB)
+            if (flag.getCountOfFlaggedCellsAround(coord) == bomb.get(coord).getNumber())
+                for(Coord around : Ranges.getCoordsAround(coord)){
+                    if(flag.get(around) == Cell.CLOSED) openCell(around);
+                }
     }
 }

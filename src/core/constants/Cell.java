@@ -21,4 +21,5 @@ public enum Cell {
     public Cell getNextNum() {
         return Cell.values()[this.ordinal() + 1];
     }
+    public int getNumber() { return this.ordinal(); }
 }

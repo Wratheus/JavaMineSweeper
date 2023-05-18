@@ -19,7 +19,7 @@ public class JavaMineSweeperUI extends JFrame {
     }
 
     private JavaMineSweeperUI() {
-        Field.GameDifficulty difficulty = Field.GameDifficulty.BEGINNER;
+        Field.GameDifficulty difficulty = Field.GameDifficulty.INTERMEDIATE;
         game = new Game(difficulty);
         game.start();
         setImages();
@@ -39,7 +39,7 @@ public class JavaMineSweeperUI extends JFrame {
             protected void paintComponent(Graphics cell) {
                 super.paintComponent(cell);
                 for (Coord coord : Ranges.getCoordsList())
-                    cell.drawImage((Image) game.getBox(coord).image,
+                    cell.drawImage((Image) game.getCell(coord).image,
                             coord.getX() * Field.IMAGE_SIZE,
                             coord.getY() * Field.IMAGE_SIZE,
                             this);
@@ -91,16 +91,16 @@ public class JavaMineSweeperUI extends JFrame {
     }
     private String getMessage() {
         switch (game.getState()){
-            case LOSE -> {
+            case LOSE: {
                 return "GAME OVER";
             }
-            case WIN -> {
+            case WIN: {
                 return "Congratulations!";
             }
-            case PLAYING -> {
+            case PLAYING: {
                 return "GoodLuck!";
             }
-            default -> {
+            default: {
                 return "Welcome!";
             }
         }

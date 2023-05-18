@@ -17,7 +17,9 @@ public class Bomb {
     public Cell get(Coord coord) {
         return bombMap.getCell(coord);
     }
-
+    public int getTotalBombs(){
+        return totalBombs;
+    }
     private void placeBomb() {
         int i = 0;
         while (i < totalBombs) {
@@ -33,7 +35,7 @@ public class Bomb {
     }
     private int fixBombsCount(int totalBombs){
         int maxBombs = (Ranges.getSize().getX() * Ranges.getSize().getY()) / 2;  // max = square / 2
-        return (totalBombs <= maxBombs) ?  totalBombs : maxBombs;
+        return Math.min(totalBombs, maxBombs);
     }
     private void placeNumberAroundBombs(Coord bomb) {
         for(Coord around : Ranges.getCoordsAround(bomb))

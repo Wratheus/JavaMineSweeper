@@ -13,7 +13,8 @@ public class Coord {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Coord coord)) return false;
+        if (!(o instanceof Coord)) return false;
+        Coord coord = (Coord) o;
         return x == coord.x && y == coord.y;
     }
 

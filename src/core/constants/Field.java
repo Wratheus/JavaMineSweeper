@@ -17,22 +17,26 @@ public final class Field {
 
     public Field(GameDifficulty difValue) {
         switch (difValue) {
-            default -> { // INTERMEDIATE
+            default: { // INTERMEDIATE
                 SIZE = new Coord(16, 16);
                 MINES = 40;
+                break;
             }
-            case BEGINNER -> {
+            case BEGINNER: {
                 SIZE = new Coord(9, 9);
                 MINES = 10;
+                break;
             }
-            case EXPERT -> {
+            case EXPERT: {
                 SIZE = new Coord(30, 16);
                 MINES = 99;
+                break;
             }
             // TODO: custom dif
-            case CUSTOM -> {
+            case CUSTOM: {
                 SIZE = null;
                 MINES = 0;
+                break;
             }
         }
     }
