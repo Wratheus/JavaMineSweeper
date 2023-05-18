@@ -15,10 +15,9 @@ public class Game {
     private final Flag flag;
     private GameState state;
 
-    public Game (Field.GameDifficulty difficulty){
-        Field difficultyLevel = new Field(difficulty); // set difficulty constants depends on chosen diff.
-        Ranges.setSize(difficultyLevel.SIZE); // create field instance to get SIZE for ranges.
-        bomb = new Bomb(difficultyLevel.MINES); // generate under bomb map.
+    public Game (Field difficulty){
+        Ranges.setSize(difficulty.SIZE); // create field instance to get SIZE for ranges.
+        bomb = new Bomb(difficulty.MINES); // generate under bomb map.
         flag = new Flag(); // generate closed and flags map.
     }
     public void start(){
@@ -73,7 +72,7 @@ public class Game {
     }
 
     // gameplay
-    private final Set<Coord> checkedCells = new HashSet<Coord>(); // list of checked values
+    private final Set<Coord> checkedCells = new HashSet<>(); // list of checked values
     private void revealAround(Coord coord) {
         for (Coord around : Ranges.getCoordsAround(coord)) {
             if (!checkedCells.contains(around)) {

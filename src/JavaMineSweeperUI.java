@@ -9,27 +9,54 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.awt.event.*;
 
-public class JavaMineSweeperUI extends JFrame {
+
+    public final class JavaMineSweeperUI extends JFrame implements ActionListener, MouseListener{
+    private final JButton beginner = new JButton("Easy");
+    private final JButton intermediate = new JButton("Medium");
+    private final JButton expert = new JButton("Hard");
+    private final JPanel ButtonPanel = new JPanel();
     private JPanel panel;
     private final Game game;
     private JLabel gameStateLabel;
+    private final int IMAGE_SIZE;
     public static void main(String[] args) {
-        new JavaMineSweeperUI().setVisible(true);
+        new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
     }
 
-    private JavaMineSweeperUI() {
-        Field.GameDifficulty difficulty = Field.GameDifficulty.INTERMEDIATE;
-        game = new Game(difficulty);
+    private JavaMineSweeperUI(Field difficultyLevel) {
+        game = new Game(difficultyLevel);
+        IMAGE_SIZE = difficultyLevel.IMAGE_SIZE;
         game.start();
         setImages();
         initLabel();
+        initButtonPanel();
         initPanel();
         initFrame();
     }
     private void initLabel() {
         gameStateLabel = new JLabel("Welcome");
         add(gameStateLabel, BorderLayout.NORTH);
+    }
+    private void initButtonPanel(){
+        setLayout(new BorderLayout());
+        add(ButtonPanel,BorderLayout.SOUTH);
+        ButtonPanel.add(beginner);
+        beginner.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.BEGINNER)).setVisible(true);
+        });
+        ButtonPanel.add(intermediate);
+        intermediate.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
+        });
+        ButtonPanel.add(expert);
+        expert.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.EXPERT)).setVisible(true);
+        });
     }
     private void initPanel () {
         // cells
@@ -40,23 +67,25 @@ public class JavaMineSweeperUI extends JFrame {
                 super.paintComponent(cell);
                 for (Coord coord : Ranges.getCoordsList())
                     cell.drawImage((Image) game.getCell(coord).image,
-                            coord.getX() * Field.IMAGE_SIZE,
-                            coord.getY() * Field.IMAGE_SIZE,
+                            coord.getX() * IMAGE_SIZE,
+                            coord.getY() * IMAGE_SIZE,
+                            IMAGE_SIZE,
+                            IMAGE_SIZE,
                             this);
             }
         };
         // the game Field
         final Dimension gameField = new Dimension(
-                Ranges.getSize().getX() * Field.IMAGE_SIZE,
-                Ranges.getSize().getY() * Field.IMAGE_SIZE
+                Ranges.getSize().getX() * IMAGE_SIZE,
+                Ranges.getSize().getY() * IMAGE_SIZE
         );
 
         panel.setPreferredSize(gameField);
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
-                int x = e.getX() / Field.IMAGE_SIZE;
-                int y = e.getY() / Field.IMAGE_SIZE;
+                int x = e.getX() / IMAGE_SIZE;
+                int y = e.getY() / IMAGE_SIZE;
                 Coord coord = new Coord(x, y);
                 if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord);
                 if(e.getButton() == MouseEvent.BUTTON3) game.pressedRightButton(coord);
@@ -69,7 +98,7 @@ public class JavaMineSweeperUI extends JFrame {
 
     private void initFrame () {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Java Mine Sweeper");
+        setTitle("Java MineSweeper");
         setIconImage(getImage("icon"));
         setLocationRelativeTo(null);
         setResizable(false);
@@ -104,5 +133,34 @@ public class JavaMineSweeperUI extends JFrame {
                 return "Welcome!";
             }
         }
+    }
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
