@@ -3,6 +3,9 @@
   <img src="https://i.imgur.com/pVnvUVb.png" alt="application" width="512" />
 
 <p align="left">
-Tracksu is Dart / Flutter Android app which visualises data provided by osu! API
-that could be useful for phone users.
+<h3>Installation:</h4>
+<ul>
+<li> Download .jar executing file from releases
+<li> Install Oracle JRE/JDK 8ver+
+<li> Double click minesweeper.jar or you can do it via CMD "java -jar <path to file>.jar
 </p>
