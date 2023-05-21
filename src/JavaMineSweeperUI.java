@@ -3,6 +3,8 @@ import core.Game;
 import core.components.Ranges;
 import core.constants.Cell;
 import core.constants.Field;
+import feature.components.ButtonPanel;
+import feature.components.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,55 +14,31 @@ import java.util.Objects;
 import java.awt.event.*;
 
 
-    public final class JavaMineSweeperUI extends JFrame implements ActionListener, MouseListener{
-    private final JButton beginner = new JButton("Easy");
-    private final JButton intermediate = new JButton("Medium");
-    private final JButton expert = new JButton("Hard");
-    private final JPanel ButtonPanel = new JPanel();
-    private JPanel panel;
+    public final class JavaMineSweeperUI extends JFrame implements MouseListener, ActionListener{
+    private final StatusPanel statusPanel;
+    private final ButtonPanel buttonPanel;
+    private JPanel gameField = new JPanel();
     private final Game game;
-    private JLabel gameStateLabel;
     private final int IMAGE_SIZE;
     public static void main(String[] args) {
         new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
     }
 
-    private JavaMineSweeperUI(Field difficultyLevel) {
+    public JavaMineSweeperUI(Field difficultyLevel) {
         game = new Game(difficultyLevel);
         IMAGE_SIZE = difficultyLevel.IMAGE_SIZE;
         game.start();
         setImages();
-        initLabel();
-        initButtonPanel();
+        statusPanel = new StatusPanel();
+        buttonPanel = new ButtonPanel();
+        addActionListeners();
         initPanel();
         initFrame();
     }
-    private void initLabel() {
-        gameStateLabel = new JLabel("Welcome");
-        add(gameStateLabel, BorderLayout.NORTH);
-    }
-    private void initButtonPanel(){
-        setLayout(new BorderLayout());
-        add(ButtonPanel,BorderLayout.SOUTH);
-        ButtonPanel.add(beginner);
-        beginner.addActionListener(e -> {
-            dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.BEGINNER)).setVisible(true);
-        });
-        ButtonPanel.add(intermediate);
-        intermediate.addActionListener(e -> {
-            dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
-        });
-        ButtonPanel.add(expert);
-        expert.addActionListener(e -> {
-            dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.EXPERT)).setVisible(true);
-        });
-    }
     private void initPanel () {
+        setLayout(new BorderLayout());
         // cells
-        panel = new JPanel() {
+        gameField = new JPanel() {
             // cells
             @Override
             protected void paintComponent(Graphics cell) {
@@ -74,14 +52,13 @@ import java.awt.event.*;
                             this);
             }
         };
-        // the game Field
-        final Dimension gameField = new Dimension(
+        final Dimension gameFieldSize = new Dimension(
                 Ranges.getSize().getX() * IMAGE_SIZE,
                 Ranges.getSize().getY() * IMAGE_SIZE
         );
 
-        panel.setPreferredSize(gameField);
-        panel.addMouseListener(new MouseAdapter() {
+        gameField.setPreferredSize(gameFieldSize);
+        gameField.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
                 int x = e.getX() / IMAGE_SIZE;
@@ -89,11 +66,13 @@ import java.awt.event.*;
                 Coord coord = new Coord(x, y);
                 if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord);
                 if(e.getButton() == MouseEvent.BUTTON3) game.pressedRightButton(coord);
-                gameStateLabel.setText(getMessage());
-                panel.repaint();
+                statusPanel.gameStateLabel.setText(getMessage());
+                gameField.repaint();
             }
         });
-        add(panel);
+        add(statusPanel,BorderLayout.NORTH);
+        add(gameField, BorderLayout.CENTER);
+        add(buttonPanel,BorderLayout.SOUTH);
     }
 
     private void initFrame () {
@@ -114,17 +93,19 @@ import java.awt.event.*;
     }
     // get Images from enum resources
     private Image getImage(String name) {
-        String fileName = "img/" + name.toLowerCase() + ".png";
+        String fileName = "img/" + name + ".png";
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(fileName)));
         return icon.getImage();
     }
     private String getMessage() {
         switch (game.getState()){
             case LOSE: {
+                statusPanel.stopwatch.stop();
                 return "GAME OVER";
             }
             case WIN: {
-                return "Congratulations!";
+                statusPanel.stopwatch.stop();
+                return "Congratulations, You win!";
             }
             case PLAYING: {
                 return "GoodLuck!";
@@ -134,33 +115,34 @@ import java.awt.event.*;
             }
         }
     }
-    @Override
-    public void actionPerformed(ActionEvent ae) {
+    private void addActionListeners() {
+        buttonPanel.beginner.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.BEGINNER)).setVisible(true);
+        });
 
+
+        buttonPanel.intermediate.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
+        });
+
+
+        buttonPanel.expert.addActionListener(e -> {
+            dispose();
+            new JavaMineSweeperUI(new Field(Field.GameDifficulty.EXPERT)).setVisible(true);
+        });
     }
-
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
+    public void mouseClicked(MouseEvent e) {}
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
+    public void mousePressed(MouseEvent e) {}
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
+    public void mouseReleased(MouseEvent e) {}
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
+    public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {
-
+    public void mouseExited(MouseEvent e) {}
+    @Override
+    public void actionPerformed(ActionEvent e) {}
     }
-}
