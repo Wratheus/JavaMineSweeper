@@ -4,15 +4,8 @@ import core.components.Coord;
 
 public final class Field {
     public int IMAGE_SIZE;
-
     public Coord SIZE;
     public int MINES;
-
-    public enum GameDifficulty {
-        BEGINNER, // 9x9 FIElD, 10 MINES
-        INTERMEDIATE, // 16X16, 40 MINES
-        EXPERT, // 40X16, 99 MINES
-    }
 
     public Field(GameDifficulty difValue) {
         switch (difValue) {

@@ -6,18 +6,21 @@ import core.components.Flag;
 import core.components.Ranges;
 import core.constants.Cell;
 import core.constants.Field;
+import core.constants.GameDifficulty;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
     private final Bomb bomb;
-    private final Flag flag;
+    public final Flag flag;
+    public Field difficultyValues;
     private GameState state;
 
-    public Game (Field difficulty){
-        Ranges.setSize(difficulty.SIZE); // create field instance to get SIZE for ranges.
-        bomb = new Bomb(difficulty.MINES); // generate under bomb map.
+    public Game (GameDifficulty difficulty){
+        difficultyValues = new Field(difficulty);
+        Ranges.setSize(difficultyValues.SIZE); // create field instance to get SIZE for ranges.
+        bomb = new Bomb(difficultyValues.MINES); // generate under bomb map.
         flag = new Flag(); // generate closed and flags map.
     }
     public void start(){
@@ -37,7 +40,7 @@ public class Game {
         checkWin();
     }
     public void pressedRightButton(Coord coord) {
-        if (state == GameState.PLAYING) {
+        if (state != GameState.LOSE) {
             flag.setFlaggedToCell(coord);
             checkWin();
         }
@@ -95,7 +98,6 @@ public class Game {
                                 flag.setOpenedToCell(around); // else reveal number-value
                                 break;
                             }
-
                         }
                         break;
                     }

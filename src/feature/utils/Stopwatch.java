@@ -17,7 +17,6 @@ public class Stopwatch implements ActionListener {
     String hours_string = String.format("%02d", hours);
 
     Timer timer = new Timer(1000, e -> {
-        timeLabel.setFont(new Font("Verdana",Font.PLAIN,14));
         elapsedTime=elapsedTime+1000;
         hours = (elapsedTime/3600000);
         minutes = (elapsedTime/60000) % 60;
@@ -25,7 +24,7 @@ public class Stopwatch implements ActionListener {
         seconds_string = String.format("%02d", seconds);
         minutes_string = String.format("%02d", minutes);
         hours_string = String.format("%02d", hours);
-        timeLabel.setText("Time elapsed: " + hours_string+":"+minutes_string+":"+seconds_string);
+        timeLabel.setText("| Time: " + hours_string+":"+minutes_string+":"+seconds_string+" |");
     });
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -33,7 +32,8 @@ public class Stopwatch implements ActionListener {
         start();
     }
     public Stopwatch(){
-        timeLabel.setText("Time elapsed: " + hours_string+":"+minutes_string+":"+seconds_string);
+        timeLabel.setFont(new Font("Verdana",Font.PLAIN,14));
+        timeLabel.setText("| Time: " + hours_string+":"+minutes_string+":"+seconds_string+" |");
     }
     public void start() {
         timer.start();

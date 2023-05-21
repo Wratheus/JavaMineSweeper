@@ -2,7 +2,7 @@ import core.components.Coord;
 import core.Game;
 import core.components.Ranges;
 import core.constants.Cell;
-import core.constants.Field;
+import core.constants.GameDifficulty;
 import feature.components.ButtonPanel;
 import feature.components.StatusPanel;
 
@@ -21,15 +21,15 @@ import java.awt.event.*;
     private final Game game;
     private final int IMAGE_SIZE;
     public static void main(String[] args) {
-        new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
+        new JavaMineSweeperUI(GameDifficulty.INTERMEDIATE).setVisible(true);
     }
 
-    public JavaMineSweeperUI(Field difficultyLevel) {
+    public JavaMineSweeperUI(GameDifficulty difficultyLevel) {
         game = new Game(difficultyLevel);
-        IMAGE_SIZE = difficultyLevel.IMAGE_SIZE;
+        IMAGE_SIZE = game.difficultyValues.IMAGE_SIZE;
         game.start();
         setImages();
-        statusPanel = new StatusPanel();
+        statusPanel = new StatusPanel(game.difficultyValues.MINES);
         buttonPanel = new ButtonPanel();
         addActionListeners();
         initPanel();
@@ -64,8 +64,11 @@ import java.awt.event.*;
                 int x = e.getX() / IMAGE_SIZE;
                 int y = e.getY() / IMAGE_SIZE;
                 Coord coord = new Coord(x, y);
-                if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord);
-                if(e.getButton() == MouseEvent.BUTTON3) game.pressedRightButton(coord);
+                if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord); // left click
+                if(e.getButton() == MouseEvent.BUTTON3) { // right click
+                    game.pressedRightButton(coord);
+                    statusPanel.setMines(game.difficultyValues.MINES - game.flag.getTotalFlags());
+                }
                 statusPanel.gameStateLabel.setText(getMessage());
                 gameField.repaint();
             }
@@ -105,7 +108,7 @@ import java.awt.event.*;
             }
             case WIN: {
                 statusPanel.stopwatch.stop();
-                return "Congratulations, You win!";
+                return "YOU WIN!";
             }
             case PLAYING: {
                 return "GoodLuck!";
@@ -118,20 +121,20 @@ import java.awt.event.*;
     private void addActionListeners() {
         buttonPanel.beginner.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.BEGINNER)).setVisible(true);
+            new JavaMineSweeperUI(GameDifficulty.BEGINNER).setVisible(true);
         });
-
 
         buttonPanel.intermediate.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.INTERMEDIATE)).setVisible(true);
+            new JavaMineSweeperUI(GameDifficulty.INTERMEDIATE).setVisible(true);
         });
-
 
         buttonPanel.expert.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(new Field(Field.GameDifficulty.EXPERT)).setVisible(true);
+            new JavaMineSweeperUI(GameDifficulty.EXPERT).setVisible(true);
         });
+
+
     }
     @Override
     public void mouseClicked(MouseEvent e) {}
