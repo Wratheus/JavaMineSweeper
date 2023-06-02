@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
-    private final Bomb bomb;
+    public final Bomb bomb;
     public final Flag flag;
     public Field difficultyValues;
     private GameState state;
 
-    public Game (GameDifficulty difficulty){
-        difficultyValues = new Field(difficulty);
+    public Game (Field difficulty){
+        difficultyValues = difficulty;
         Ranges.setSize(difficultyValues.SIZE); // create field instance to get SIZE for ranges.
         bomb = new Bomb(difficultyValues.MINES); // generate under bomb map.
         flag = new Flag(); // generate closed and flags map.
@@ -40,7 +40,7 @@ public class Game {
         checkWin();
     }
     public void pressedRightButton(Coord coord) {
-        if (state != GameState.LOSE) {
+        if (state == GameState.PLAYING) {
             flag.setFlaggedToCell(coord);
             checkWin();
         }
@@ -66,10 +66,8 @@ public class Game {
     }
     private void checkWin() {
         if(state == GameState.PLAYING){
-            if(flag.getTotalFlags() == bomb.getTotalBombs()) {
-                if (flag.getCountOfClosedCells() == bomb.getTotalBombs()){
-                    setState(GameState.WIN);
-                }
+            if (flag.getCountOfClosedCells() == bomb.getTotalBombs()){
+                setState(GameState.WIN);
             }
         }
     }

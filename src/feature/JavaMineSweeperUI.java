@@ -1,10 +1,14 @@
+package feature;
+
 import core.components.Coord;
 import core.Game;
 import core.components.Ranges;
 import core.constants.Cell;
+import core.constants.Field;
 import core.constants.GameDifficulty;
-import feature.components.ButtonPanel;
-import feature.components.StatusPanel;
+import feature.dialogs.CustomFieldDialog;
+import feature.panels.ButtonPanel;
+import feature.panels.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,20 +24,19 @@ import java.awt.event.*;
     private JPanel gameField = new JPanel();
     private final Game game;
     private final int IMAGE_SIZE;
-    public static void main(String[] args) {
-        new JavaMineSweeperUI(GameDifficulty.INTERMEDIATE).setVisible(true);
-    }
+    private JFrame dialog = null;
 
-    public JavaMineSweeperUI(GameDifficulty difficultyLevel) {
-        game = new Game(difficultyLevel);
+    public JavaMineSweeperUI(Field difficulty) {
+        game = new Game(difficulty);
         IMAGE_SIZE = game.difficultyValues.IMAGE_SIZE;
         game.start();
         setImages();
-        statusPanel = new StatusPanel(game.difficultyValues.MINES);
+        statusPanel = new StatusPanel(game.bomb.getTotalBombs());
         buttonPanel = new ButtonPanel();
         addActionListeners();
         initPanel();
         initFrame();
+        setVisible(true);
     }
     private void initPanel () {
         setLayout(new BorderLayout());
@@ -82,9 +85,10 @@ import java.awt.event.*;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java MineSweeper");
         setIconImage(getImage("icon"));
-        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/4-this.getSize().height/2);
         pack();
     }
 
@@ -94,9 +98,12 @@ import java.awt.event.*;
             cell.image = getImage(cell.name().toLowerCase());
         }
     }
+    public void disposeDialog(){
+        dialog = null;
+    }
     // get Images from enum resources
     private Image getImage(String name) {
-        String fileName = "img/" + name + ".png";
+        String fileName = "../img/" + name + ".png";
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(fileName)));
         return icon.getImage();
     }
@@ -121,17 +128,21 @@ import java.awt.event.*;
     private void addActionListeners() {
         buttonPanel.beginner.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(GameDifficulty.BEGINNER).setVisible(true);
+            new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.BEGINNER));
         });
 
         buttonPanel.intermediate.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(GameDifficulty.INTERMEDIATE).setVisible(true);
+            new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.INTERMEDIATE));
         });
 
         buttonPanel.expert.addActionListener(e -> {
             dispose();
-            new JavaMineSweeperUI(GameDifficulty.EXPERT).setVisible(true);
+            new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.EXPERT));
+        });
+
+        buttonPanel.custom.addActionListener(e -> {
+            if(dialog == null) dialog = new CustomFieldDialog(this);
         });
 
 

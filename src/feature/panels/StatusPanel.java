@@ -1,4 +1,4 @@
-package feature.components;
+package feature.panels;
 
 import feature.utils.Stopwatch;
 
