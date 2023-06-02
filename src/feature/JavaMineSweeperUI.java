@@ -103,7 +103,7 @@ import java.awt.event.*;
     }
     // get Images from enum resources
     private Image getImage(String name) {
-        String fileName = "../img/" + name + ".png";
+        String fileName = "/img/" + name + ".png";
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(fileName)));
         return icon.getImage();
     }
