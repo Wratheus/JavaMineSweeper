@@ -1,60 +1,34 @@
 package core.models;
 
+import core.constants.Field;
+
 import java.io.Serializable;
 
 public final class Record implements Serializable {
     String name;
     int time;
+    String size;
+    int mines;
 
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getTime() {
         return time;
     }
-
-    public void setTime(int time) {
-        this.time = time;
+    public String getSize() {
+        return size;
     }
 
-    public int getMine() {
-        return mine;
+    public int getMines() {
+        return mines;
     }
 
-    public void setMine(int mine) {
-        this.mine = mine;
-    }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    int mine;
-    int width;
-    int height;
-
-    public Record(String name, int time, int mine, int width, int height) {
+    public Record(String name, int time, Field field) {
         this.name = name;
-        this.time = mine;
-        this.mine = mine;
-        this.width = width;
-        this.height = height;
+        this.time = time;
+        this.size = field.SIZE.getX() + "x" + field.SIZE.getY();
+        this.mines = field.MINES;
     }
 }

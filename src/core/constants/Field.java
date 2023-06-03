@@ -1,6 +1,6 @@
 package core.constants;
 
-import core.components.Coord;
+import core.objects.Coord;
 
 public class Field {
     public int IMAGE_SIZE;

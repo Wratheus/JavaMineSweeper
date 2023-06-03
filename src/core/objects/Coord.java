@@ -1,4 +1,4 @@
-package core.components;
+package core.objects;
 
 import java.util.Objects;
 

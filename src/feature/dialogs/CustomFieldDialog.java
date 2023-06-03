@@ -1,6 +1,6 @@
 package feature.dialogs;
 
-import core.components.Coord;
+import core.objects.Coord;
 import core.constants.Field;
 import feature.JavaMineSweeperUI;
 import feature.components.TextField;
@@ -62,6 +62,8 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
         panel.add(mines);
         panel.add(buttonPanel);
 
+        this.setTitle("Java MS");
+        this.setIconImage(JavaMineSweeperUI.getImage("icon"));
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -100,11 +102,11 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                 int height = Integer.parseInt(this.height.getText());
                 final int MINES = Integer.parseInt(this.mines.getText());
 
-                if(width > 60) // max width
-                    width = 60;
+                if(width > 55) // max width
+                    width = 55;
 
                 if(width - height < 0) // max height
-                    height = (int) (width / 1.5);
+                    height = (int) (width / 2);
 
 
                 int IMAGE_SIZE;
@@ -112,6 +114,7 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                     IMAGE_SIZE = 17;
                 else if(width >= 40 || height >= 40)
                     IMAGE_SIZE = 25;
+                // TODO:
 //                else if (width <= 9 || height <= 9) {
 //                    width = 9;
 //                    height = 9;
@@ -121,8 +124,9 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                     IMAGE_SIZE = 30;
 
                 final Coord SIZE = new Coord(width, height);
-                new JavaMineSweeperUI(new Field(SIZE, MINES, IMAGE_SIZE));
+                dispose();
                 this.parentContext.dispose();
+                new JavaMineSweeperUI(new Field(SIZE, MINES, IMAGE_SIZE));
             }catch (RuntimeException error) {
                 error.printStackTrace();
                 dispose();
