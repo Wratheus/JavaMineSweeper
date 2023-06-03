@@ -3,9 +3,9 @@ package core.objects;
 import core.constants.Cell;
 
 public class Flag {
-    Matrix flagMap;
-    int countOfClosedCells;
-    int countOfFlaggedCells;
+    private Matrix flagMap;
+    private int countOfClosedCells;
+    private int countOfFlaggedCells;
 
     public void init(){
         flagMap = new Matrix(Cell.CLOSED);

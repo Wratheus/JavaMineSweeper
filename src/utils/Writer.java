@@ -4,13 +4,12 @@ import core.components.GamePlay;
 import core.models.Record;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Base64;
 
 public class Writer {
-    GamePlay gamePlay;
+    private final GamePlay gamePlay;
     public Writer(GamePlay gamePlay){
         this.gamePlay = gamePlay;
     }
@@ -30,15 +29,15 @@ public class Writer {
     }
 
     public void writeRecord(String name) throws IOException {
-        Record record = new Record(name, gamePlay.stopwatch.elapsedTime, gamePlay.field.fieldSize);
+        Record record = new Record(name, gamePlay.getStopwatch().getElapsedTime(), gamePlay.getField().fieldSize());
         Path path = Paths.get("db/records.bin");
         try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)){
             writer.write(toString(record) + "\n");
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        //System.out.println(record);
     }
+
     public void showRecord() throws IOException, ClassNotFoundException {
         Path path = Paths.get("db/records.bin");
         byte[] bytes = Files.readAllBytes(path);

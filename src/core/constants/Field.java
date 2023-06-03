@@ -3,9 +3,9 @@ package core.constants;
 import core.objects.Coord;
 
 public class Field {
-    public int IMAGE_SIZE;
-    public Coord SIZE;
-    public int MINES;
+    private final int IMAGE_SIZE;
+    private final Coord SIZE;
+    private final int MINES;
 
     public Field(Coord SIZE, int MINES, int IMAGE_SIZE) {
         this.SIZE = SIZE;
@@ -34,5 +34,17 @@ public class Field {
             }
         }
         return field;
+    }
+
+    public int getIMAGE_SIZE() {
+        return IMAGE_SIZE;
+    }
+
+    public Coord getSIZE() {
+        return SIZE;
+    }
+
+    public int getMINES() {
+        return MINES;
     }
 }

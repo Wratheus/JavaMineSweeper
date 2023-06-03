@@ -6,10 +6,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel implements ActionListener {
-    public JButton beginner = new JButton("Easy");
-    public JButton intermediate = new JButton("Medium");
-    public JButton expert = new JButton("Hard");
-    public JButton custom = new JButton("Custom");
+    private final JButton beginner = new JButton("Easy");
+    private final JButton intermediate = new JButton("Medium");
+    private final JButton expert = new JButton("Hard");
+    private final JButton custom = new JButton("Custom");
+
+    public JButton getBeginner() {
+        return beginner;
+    }
+
+    public JButton getIntermediate() {
+        return intermediate;
+    }
+
+    public JButton getExpert() {
+        return expert;
+    }
+
+    public JButton getCustom() {
+        return custom;
+    }
+
     public ButtonPanel(){
 
         beginner.setFocusPainted(false);

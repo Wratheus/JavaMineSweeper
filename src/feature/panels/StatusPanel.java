@@ -6,8 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StatusPanel extends JPanel {
-    public JLabel gameStateLabel = new JLabel();
-    public JLabel minesLeft = new JLabel();
+    private final JLabel gameStateLabel = new JLabel();
+    private final JLabel minesLeft = new JLabel();
+
+    public JLabel getGameStateLabel() {
+        return gameStateLabel;
+    }
 
     public StatusPanel(int overallMines, Stopwatch stopwatch){
         gameStateLabel.setFont(new Font("Verdana",Font.PLAIN,14));
@@ -15,7 +19,7 @@ public class StatusPanel extends JPanel {
         JPanel statusPanel = new JPanel();
         statusPanel.add(gameStateLabel);
         stopwatch.start();
-        statusPanel.add(stopwatch.timeLabel);
+        statusPanel.add(stopwatch.getTimeLabel());
         minesLeft.setFont(new Font("Verdana",Font.PLAIN,14));
         minesLeft.setText("\tMines: " + overallMines);
         statusPanel.add(minesLeft);
