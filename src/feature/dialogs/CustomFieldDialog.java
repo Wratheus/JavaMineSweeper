@@ -112,11 +112,12 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                     IMAGE_SIZE = 17;
                 else if(width >= 40 || height >= 40)
                     IMAGE_SIZE = 25;
-                else if (width <= 9 || height <= 9) {
-                    width = 9;
-                    height = 9;
-                    IMAGE_SIZE = 45;
-                } else
+//                else if (width <= 9 || height <= 9) {
+//                    width = 9;
+//                    height = 9;
+//                    IMAGE_SIZE = 45;
+//                }
+                else
                     IMAGE_SIZE = 30;
 
                 final Coord SIZE = new Coord(width, height);
@@ -128,9 +129,7 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
             }
 
         });
-        CANCEL.addActionListener(e -> {
-            dispose();
-        });
+        CANCEL.addActionListener(e -> dispose());
     }
 
     @Override

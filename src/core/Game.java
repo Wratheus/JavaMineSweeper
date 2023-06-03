@@ -6,8 +6,14 @@ import core.components.Flag;
 import core.components.Ranges;
 import core.constants.Cell;
 import core.constants.Field;
-import core.constants.GameDifficulty;
+import core.models.Record;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +28,7 @@ public class Game {
         Ranges.setSize(difficultyValues.SIZE); // create field instance to get SIZE for ranges.
         bomb = new Bomb(difficultyValues.MINES); // generate under bomb map.
         flag = new Flag(); // generate closed and flags map.
+        //showRecord();
     }
     public void start(){
         bomb.init();
@@ -68,7 +75,29 @@ public class Game {
         if(state == GameState.PLAYING){
             if (flag.getCountOfClosedCells() == bomb.getTotalBombs()){
                 setState(GameState.WIN);
+                writeRecord();
+                showRecord();
             }
+        }
+    }
+    private void writeRecord() {
+        Record record = new Record("Me", 600, 50, 100, 100);
+        Path path = Paths.get("db/records.bin");
+        try(ObjectOutputStream ois = new ObjectOutputStream(Files.newOutputStream(path))){
+            ois.writeObject(record);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void showRecord() {
+        Record record;
+        Path path = Paths.get("db/records.bin");
+        try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))){
+            record = (Record) ois.readObject();
+            System.out.println(record);
+            System.out.println(record.getName());
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
