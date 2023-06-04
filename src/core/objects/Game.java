@@ -2,7 +2,7 @@ package core.objects;
 
 import core.constants.GameState;
 import core.models.Coord;
-import utils.Ranges;
+import core.utils.Ranges;
 import core.models.Field;
 
 public class Game {

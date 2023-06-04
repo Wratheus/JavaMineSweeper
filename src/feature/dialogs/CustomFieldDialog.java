@@ -66,8 +66,7 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
         this.setIconImage(JavaMineSweeperUI.getImage("icon"));
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setResizable(false);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/3-this.getSize().height/2);
+        this.setLocationRelativeTo(parentContext);
         this.add(panel);
         this.setPreferredSize(new Dimension(260, 250));
         this.pack();
@@ -114,12 +113,11 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                     IMAGE_SIZE = 17;
                 else if(width >= 40 || height >= 40)
                     IMAGE_SIZE = 25;
-                // TODO:
-//                else if (width <= 9 || height <= 9) {
-//                    width = 9;
-//                    height = 9;
-//                    IMAGE_SIZE = 45;
-//                }
+                /*else if (width <= 9 || height <= 9) {
+                    width = 9;
+                    height = 9;
+                    IMAGE_SIZE = 45;
+                }*/
                 else
                     IMAGE_SIZE = 30;
 

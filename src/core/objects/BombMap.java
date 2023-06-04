@@ -3,7 +3,7 @@ package core.objects;
 import core.constants.Cell;
 import core.models.Coord;
 import core.models.Matrix;
-import utils.Ranges;
+import core.utils.Ranges;
 
 public class BombMap {
     private Matrix bombMap;

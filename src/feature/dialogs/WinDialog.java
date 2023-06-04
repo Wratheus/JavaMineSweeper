@@ -2,13 +2,12 @@ package feature.dialogs;
 
 import feature.JavaMineSweeperUI;
 import feature.components.TextField;
-import utils.Writer;
+import core.utils.Writer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class WinDialog extends JFrame implements ActionListener {
     private JButton OK;
@@ -24,12 +23,7 @@ public class WinDialog extends JFrame implements ActionListener {
         panel.setLayout(new BorderLayout());
         this.name = new TextField();
         name.setToolTipText("Name");
-        name.setText("Name");
-//        try{
-//            writer.showRecord();
-//        }catch (IOException | ClassNotFoundException ignored) {
-//
-//        }
+
 
         JLabel nameLabel = new JLabel("  Input name");
         nameLabel.setFont(new Font("Verdana",Font.PLAIN,12));
@@ -75,14 +69,9 @@ public class WinDialog extends JFrame implements ActionListener {
 
     private void addActionListeners() {
         OK.addActionListener(e -> {
-            try {
-                writer.writeRecord(name.getText());
-                writer.showRecord();
-                dispose();
-            }catch (RuntimeException | IOException | ClassNotFoundException error) {
-                error.printStackTrace();
-                dispose();
-            }
+            writer.writeRecord(name.getText());
+            writer.showRecord();
+            dispose();
         });
         CANCEL.addActionListener(e -> dispose());
     }

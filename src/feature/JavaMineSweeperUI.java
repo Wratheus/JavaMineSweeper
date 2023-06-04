@@ -3,11 +3,12 @@ package feature;
 import core.constants.GameState;
 import core.models.Coord;
 import core.objects.Game;
-import utils.Ranges;
+import core.utils.Ranges;
 import core.constants.Cell;
 import core.models.Field;
 import core.constants.GameDifficulty;
 import feature.dialogs.CustomFieldDialog;
+import feature.dialogs.RecordsDialog;
 import feature.dialogs.WinDialog;
 import feature.panels.ButtonPanel;
 import feature.panels.StatusPanel;
@@ -29,6 +30,10 @@ import java.awt.event.*;
     private final int IMAGE_SIZE;
     private JFrame dialog = null;
     private Dimension gameFieldSize;
+
+    public Game getGame() {
+        return game;
+    }
 
     public JavaMineSweeperUI(Field difficulty) {
         game = new Game(difficulty);
@@ -90,6 +95,7 @@ import java.awt.event.*;
     }
 
     private void initFrame () {
+        initMenuBar();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java MineSweeper");
         setIconImage(getImage("icon"));
@@ -97,6 +103,20 @@ import java.awt.event.*;
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - gameFieldSize.width / 2, dim.height / 3 - gameFieldSize.height / 2);
         pack();
+    }
+
+    private void initMenuBar () {
+        JMenuBar mb = new JMenuBar();
+        JMenu menu1 = new JMenu("File");
+        JMenuItem records = new JMenuItem("Show Records");
+        records.setFont(new Font("Verdana",Font.PLAIN, 12));
+        menu1.setFont(new Font("Verdana",Font.PLAIN, 12));
+        menu1.add(records);
+
+        records.addActionListener(ev -> new RecordsDialog(this));
+
+        mb.add(menu1);
+        this.setJMenuBar(mb);
     }
 
     // set Images to Cells

@@ -1,6 +1,6 @@
 package feature.panels;
 
-import utils.Stopwatch;
+import core.utils.Stopwatch;
 
 import javax.swing.*;
 import java.awt.*;

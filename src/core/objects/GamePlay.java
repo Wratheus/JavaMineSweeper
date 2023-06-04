@@ -3,9 +3,9 @@ package core.objects;
 import core.constants.GameState;
 import core.constants.Cell;
 import core.models.Coord;
-import utils.Ranges;
-import utils.Stopwatch;
-import utils.Writer;
+import core.utils.Ranges;
+import core.utils.Stopwatch;
+import core.utils.Writer;
 
 import java.util.HashSet;
 import java.util.Set;

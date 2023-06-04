@@ -1,7 +1,7 @@
 package core.models;
 
 import core.constants.Cell;
-import utils.Ranges;
+import core.utils.Ranges;
 
 public class Matrix {
     private final Cell [][] matrix;
