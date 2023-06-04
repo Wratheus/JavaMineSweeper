@@ -1,11 +1,9 @@
-package core;
+package core.objects;
 
-import core.components.GameField;
-import core.components.GamePlay;
 import core.constants.GameState;
-import core.objects.Coord;
-import core.objects.Ranges;
-import core.constants.Field;
+import core.models.Coord;
+import utils.Ranges;
+import core.models.Field;
 
 public class Game {
     private final Field difficultyValues;

@@ -1,7 +1,5 @@
 package core.models;
 
-import core.constants.Field;
-
 import java.io.Serializable;
 
 public final class Record implements Serializable {

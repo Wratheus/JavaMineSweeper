@@ -1,8 +1,11 @@
 package core.objects;
 
 import core.constants.Cell;
+import core.models.Coord;
+import core.models.Matrix;
+import utils.Ranges;
 
-public class Flag {
+public class FlagMap {
     private Matrix flagMap;
     private int countOfClosedCells;
     private int countOfFlaggedCells;

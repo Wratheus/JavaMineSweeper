@@ -1,6 +1,6 @@
-package core.constants;
+package core.models;
 
-import core.objects.Coord;
+import core.constants.GameDifficulty;
 
 public class Field {
     private final int IMAGE_SIZE;

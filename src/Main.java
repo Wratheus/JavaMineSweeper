@@ -1,4 +1,4 @@
-import core.constants.Field;
+import core.models.Field;
 import core.constants.GameDifficulty;
 import feature.JavaMineSweeperUI;
 

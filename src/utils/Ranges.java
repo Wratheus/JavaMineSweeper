@@ -1,4 +1,6 @@
-package core.objects;
+package utils;
+
+import core.models.Coord;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,7 +14,7 @@ public class Ranges {
     public static void setSize(Coord _size){
         // Field generation
         Ranges.size = _size;
-        Ranges.coordsList = new ArrayList<Coord>();
+        Ranges.coordsList = new ArrayList<>();
         for (int y = 0; y < size.getY(); y++) {
             for (int x = 0; x < size.getX(); x++) {
                 coordsList.add(new Coord(x, y));
@@ -42,7 +44,7 @@ public class Ranges {
 
     public static ArrayList<Coord> getCoordsAround(Coord coord){
          Coord around;
-         ArrayList<Coord> listCoords = new ArrayList<Coord>();
+         ArrayList<Coord> listCoords = new ArrayList<>();
          for (int x = coord.getX() - 1; x <= coord.getX() + 1; x++)
              for (int y = coord.getY() - 1; y <= coord.getY() + 1; y++)
                  if (inRange(around = new Coord(x,y)))

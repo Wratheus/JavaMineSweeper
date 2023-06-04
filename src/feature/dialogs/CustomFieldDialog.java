@@ -1,7 +1,7 @@
 package feature.dialogs;
 
-import core.objects.Coord;
-import core.constants.Field;
+import core.models.Coord;
+import core.models.Field;
 import feature.JavaMineSweeperUI;
 import feature.components.TextField;
 
@@ -106,7 +106,7 @@ public class CustomFieldDialog extends JFrame implements ActionListener {
                     width = 55;
 
                 if(width - height < 0) // max height
-                    height = (int) (width / 2);
+                    height = (width / 2);
 
 
                 int IMAGE_SIZE;

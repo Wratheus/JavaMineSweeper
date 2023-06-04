@@ -1,11 +1,11 @@
 package feature;
 
 import core.constants.GameState;
-import core.objects.Coord;
-import core.Game;
-import core.objects.Ranges;
+import core.models.Coord;
+import core.objects.Game;
+import utils.Ranges;
 import core.constants.Cell;
-import core.constants.Field;
+import core.models.Field;
 import core.constants.GameDifficulty;
 import feature.dialogs.CustomFieldDialog;
 import feature.dialogs.WinDialog;

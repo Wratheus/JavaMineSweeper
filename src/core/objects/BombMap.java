@@ -1,12 +1,15 @@
 package core.objects;
 
 import core.constants.Cell;
+import core.models.Coord;
+import core.models.Matrix;
+import utils.Ranges;
 
-public class Bomb {
+public class BombMap {
     private Matrix bombMap;
     private final int totalBombs;
 
-    public Bomb(int totalBombs){
+    public BombMap(int totalBombs){
         this.totalBombs = fixBombsCount(totalBombs);
     }
 

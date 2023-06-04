@@ -1,9 +1,9 @@
-package core.components;
+package core.objects;
 
 import core.constants.GameState;
 import core.constants.Cell;
-import core.objects.Coord;
-import core.objects.Ranges;
+import core.models.Coord;
+import utils.Ranges;
 import utils.Stopwatch;
 import utils.Writer;
 
@@ -133,7 +133,6 @@ public class GamePlay {
     }
 
 
-    // state management
     public GameState getState() {
         return state;
     }

@@ -15,6 +15,7 @@ public class Stopwatch implements ActionListener {
     private String minutes_string = String.format("%02d", minutes);
     private String hours_string = String.format("%02d", hours);
 
+
     public JLabel getTimeLabel() {
         return timeLabel;
     }
@@ -24,7 +25,7 @@ public class Stopwatch implements ActionListener {
     }
 
     private final Timer timer = new Timer(1000, e -> {
-        elapsedTime=elapsedTime+1000;
+        elapsedTime=elapsedTime + 1000;
         hours = (elapsedTime/3600000);
         minutes = (elapsedTime/60000) % 60;
         seconds = (elapsedTime/1000) % 60;
