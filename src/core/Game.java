@@ -8,14 +8,25 @@ import core.objects.Ranges;
 import core.constants.Field;
 
 public class Game {
-    public Field difficultyValues;
-    public GameField gameField;
-    public GamePlay gamePlay;
+    private final Field difficultyValues;
+    private final GameField gameField;
+    private final GamePlay gamePlay;
 
+    public Field getDifficultyValues() {
+        return difficultyValues;
+    }
+
+    public GameField getGameField() {
+        return gameField;
+    }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
 
     public Game (Field difficulty){
         difficultyValues = difficulty;
-        Ranges.setSize(difficultyValues.SIZE); // create field instance to get SIZE for ranges.
+        Ranges.setSize(difficultyValues.getSIZE()); // create field instance to get SIZE for ranges.
         gameField = new GameField(difficultyValues);
         gamePlay = new GamePlay(gameField);
     }
@@ -24,14 +35,13 @@ public class Game {
         gamePlay.setState(GameState.START);
     }
 
-    // gameplay
     public void pressedLeftButton(Coord coord) {
         gamePlay.openCell(coord);
         gamePlay.checkWin();
     }
     public void pressedRightButton(Coord coord) {
         if (gamePlay.getState() == GameState.PLAYING) {
-            gameField.flag.setFlaggedToCell(coord);
+            gameField.getFlag().setFlaggedToCell(coord);
             gamePlay.checkWin();
         }
     }

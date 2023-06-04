@@ -5,10 +5,10 @@ import core.constants.Field;
 import java.io.Serializable;
 
 public final class Record implements Serializable {
-    String name;
-    int time;
-    String size;
-    int mines;
+    private final String name;
+    private final int time;
+    private final String size;
+    private final int mines;
 
     public String getName() {
         return name;
@@ -28,7 +28,7 @@ public final class Record implements Serializable {
     public Record(String name, int time, Field field) {
         this.name = name;
         this.time = time;
-        this.size = field.SIZE.getX() + "x" + field.SIZE.getY();
-        this.mines = field.MINES;
+        this.size = field.getSIZE().getX() + "x" + field.getSIZE().getY();
+        this.mines = field.getMINES();
     }
 }

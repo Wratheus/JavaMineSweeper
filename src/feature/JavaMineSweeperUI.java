@@ -32,10 +32,10 @@ import java.awt.event.*;
 
     public JavaMineSweeperUI(Field difficulty) {
         game = new Game(difficulty);
-        IMAGE_SIZE = game.difficultyValues.IMAGE_SIZE;
+        IMAGE_SIZE = game.getDifficultyValues().getIMAGE_SIZE();
         game.start();
         setImages();
-        statusPanel = new StatusPanel(game.gameField.bomb.getTotalBombs(), game.gamePlay.stopwatch);
+        statusPanel = new StatusPanel(game.getGameField().getBomb().getTotalBombs(), game.getGamePlay().getStopwatch());
         buttonPanel = new ButtonPanel();
         addActionListeners();
         initPanel();
@@ -51,7 +51,7 @@ import java.awt.event.*;
             protected void paintComponent(Graphics cell) {
                 super.paintComponent(cell);
                 for (Coord coord : Ranges.getCoordsList())
-                    cell.drawImage((Image) game.gamePlay.getCell(coord).image,
+                    cell.drawImage((Image) game.getGamePlay().getCell(coord).image,
                             coord.getX() * IMAGE_SIZE,
                             coord.getY() * IMAGE_SIZE,
                             IMAGE_SIZE,
@@ -74,12 +74,12 @@ import java.awt.event.*;
                 if(e.getButton() == MouseEvent.BUTTON1) game.pressedLeftButton(coord); // left click
                 if(e.getButton() == MouseEvent.BUTTON3) { // right click
                     game.pressedRightButton(coord);
-                    statusPanel.setMines(game.difficultyValues.MINES - game.gameField.flag.getTotalFlags());
+                    statusPanel.setMines(game.getDifficultyValues().getMINES() - game.getGameField().getFlag().getTotalFlags());
                 }
-                statusPanel.gameStateLabel.setText(getMessage());
+                statusPanel.getGameStateLabel().setText(getMessage());
                 gameField.repaint();
-                if(game.gamePlay.getState() == GameState.WIN && !winDialog) {
-                    new WinDialog(game.gamePlay.writer);
+                if(game.getGamePlay().getState() == GameState.WIN && !winDialog) {
+                    new WinDialog(game.getGamePlay().getWriter());
                     winDialog = true;
                 }
             }
@@ -115,13 +115,13 @@ import java.awt.event.*;
         return icon.getImage();
     }
     private String getMessage() {
-        switch (game.gamePlay.getState()){
+        switch (game.getGamePlay().getState()){
             case LOSE: {
-                game.gamePlay.stopwatch.stop();
+                game.getGamePlay().getStopwatch().stop();
                 return "GAME OVER";
             }
             case WIN: {
-                game.gamePlay.stopwatch.stop();
+                game.getGamePlay().getStopwatch().stop();
                 return "YOU WIN!";
             }
             case PLAYING: {
@@ -133,22 +133,22 @@ import java.awt.event.*;
         }
     }
     private void addActionListeners() {
-        buttonPanel.beginner.addActionListener(e -> {
+        buttonPanel.getBeginner().addActionListener(e -> {
             dispose();
             new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.BEGINNER));
         });
 
-        buttonPanel.intermediate.addActionListener(e -> {
+        buttonPanel.getIntermediate().addActionListener(e -> {
             dispose();
             new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.INTERMEDIATE));
         });
 
-        buttonPanel.expert.addActionListener(e -> {
+        buttonPanel.getExpert().addActionListener(e -> {
             dispose();
             new JavaMineSweeperUI(Field.fieldFactory(GameDifficulty.EXPERT));
         });
 
-        buttonPanel.custom.addActionListener(e -> {
+        buttonPanel.getCustom().addActionListener(e -> {
             if(dialog == null) dialog = new CustomFieldDialog(this);
         });
 
